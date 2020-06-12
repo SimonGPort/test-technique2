@@ -27,6 +27,7 @@ app.use("/", express.static("public")); // Needed for local assets
 
 const sessions = {};
 // Your endpoints go after this line
+
 app.post("/autoLogin", async (req, res) => {
   let sessionId = req.cookies.sid;
   let username = sessions[sessionId];
@@ -40,15 +41,23 @@ app.post("/autoLogin", async (req, res) => {
         success: true,
         HATEOAS: {
           _link: {
+            fetchBooks: { href: `/fetchBooks/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
-            logOut: { href: "/" },
+            logOut: { href: `/logOut` },
           },
         },
       })
     );
   }
+});
+
+app.post("/logOut", uploads.none(), async (req, res) => {
+  const sessionId = req.cookies.sid;
+  delete sessions[sessionId];
+  console.log("logout sucess");
+  res.send(JSON.stringify({ success: true }));
 });
 
 app.post("/register", uploads.none(), async (req, res) => {
@@ -73,10 +82,11 @@ app.post("/register", uploads.none(), async (req, res) => {
         success: true,
         HATEOAS: {
           _link: {
+            fetchBooks: { href: `/fetchBooks/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
-            logOut: { href: "/" },
+            logOut: { href: `/logOut` },
           },
         },
       })
@@ -88,8 +98,18 @@ app.post("/register", uploads.none(), async (req, res) => {
   }
 });
 
+app.get("/fetchBooks/:username", async (req, res) => {
+  let username = req.params.username;
+  try {
+    const user = await dbo.collection("users").findOne({ username });
+    let books = user.books;
+    res.send(JSON.stringify({ success: true, books }));
+  } catch (err) {
+    res.send(JSON.stringify({ success: false }));
+  }
+});
+
 app.get("/login/:username/:password", async (req, res) => {
-  console.log("login");
   let username = req.params.username;
   let password = req.params.password;
   // let username = req.body.username;
@@ -110,7 +130,7 @@ app.get("/login/:username/:password", async (req, res) => {
               mainPage: { href: `/mainPage/${username}` },
               updateProfil: { href: `/updateProfil/${username}` },
               addBook: { href: `/addBook/${username}` },
-              logOut: { href: "/" },
+              logOut: { href: "/logOut" },
             },
           },
         })

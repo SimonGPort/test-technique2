@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class MainPage extends Component {
   constructor(props) {
@@ -8,6 +9,31 @@ class MainPage extends Component {
       books: [],
     };
   }
+
+  componentDidMount() {
+    this.fetchBooks();
+  }
+  fetchBooks = async () => {
+    let response = await fetch(this.props.HATEAOS._link.fetchBooks.href);
+    let body = await response.text();
+    body = JSON.parse(body);
+    if (body.success) {
+      console.log("books updated");
+      this.setState({ books: body.books });
+    }
+  };
+
+  logout = async () => {
+    let response = await fetch(this.props.HATEAOS._link.logOut.href, {
+      method: "POST",
+    });
+    let body = await response.text();
+    body = JSON.parse(body);
+    if (body.success) {
+      this.props.history.push("/");
+      this.props.setupHATEAOS(undefined);
+    }
+  };
 
   render = () => {
     let options = [
@@ -35,7 +61,7 @@ class MainPage extends Component {
           )}
           {this.props.HATEAOS._link.logOut !== undefined ? (
             <div className="option-main">
-              <Link to={this.props.HATEAOS._link.logOut.href}>Log out</Link>
+              <button onClick={this.logout}>Log out</button>
             </div>
           ) : (
             ""
@@ -68,4 +94,4 @@ class MainPage extends Component {
   };
 }
 
-export default MainPage;
+export default withRouter(MainPage);

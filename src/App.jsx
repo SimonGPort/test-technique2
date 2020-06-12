@@ -54,6 +54,7 @@ class App extends Component {
       <MainPage
         user={routeProps.match.params.user}
         HATEAOS={this.state.HATEAOS}
+        setupHATEAOS={this.setupHATEAOS}
       />
     );
   };
