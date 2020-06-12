@@ -69,11 +69,20 @@ class MainPage extends Component {
         </div>
       </div>,
     ];
-    let books = [
-      <tr>
-        <td>Hello world</td>
-      </tr>,
-    ];
+
+    let books = this.state.books.map((book, idx) => {
+      return (
+        <tr key={idx}>
+          <td>{book.name}</td>
+          <td>{book.rating}</td>
+          <td>{book.detail}</td>
+          <td>
+            <button>Modify</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+      );
+    });
 
     return (
       <div>

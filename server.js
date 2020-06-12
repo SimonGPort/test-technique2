@@ -60,6 +60,47 @@ app.post("/logOut", uploads.none(), async (req, res) => {
   res.send(JSON.stringify({ success: true }));
 });
 
+app.post("/updateProfil/:user", uploads.none(), async (req, res) => {
+  console.log("updateProfil backend");
+  let user = req.params.user;
+  let newUsername = req.body.username;
+  let newPassword = req.body.password;
+  let newEmail = req.body.email;
+  const sessionId = req.cookies.sid;
+  sessions[sessionId] = newUsername;
+
+  try {
+    await dbo.collection("users").updateOne(
+      { username: user },
+      {
+        $set: {
+          username: newUsername,
+          password: newPassword,
+          email: newEmail,
+        },
+      }
+    );
+    res.send(
+      JSON.stringify({
+        success: true,
+        HATEOAS: {
+          _link: {
+            fetchBooks: { href: `/fetchBooks/${newUsername}` },
+            mainPage: { href: `/mainPage/${newUsername}` },
+            updateProfil: { href: `/updateProfil/${newUsername}` },
+            addBook: { href: `/addBook/${newUsername}` },
+            logOut: { href: `/logOut` },
+          },
+        },
+      })
+    );
+  } catch (err) {
+    console.log("update profil fail", err);
+    res.send(JSON.stringify({ success: false }));
+    return;
+  }
+});
+
 app.post("/register", uploads.none(), async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;

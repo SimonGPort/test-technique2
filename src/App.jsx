@@ -5,8 +5,8 @@ import Register from "./Register.jsx";
 import Login from "./Login.jsx";
 // import Navbar from "./Navbar.jsx";
 import MainPage from "./MainPage.jsx";
-import addBook from "./addBook.jsx";
-import updateProfil from "./updateProfil.jsx";
+import AddBook from "./addBook.jsx";
+import UpdateProfil from "./UpdateProfil.jsx";
 import { withRouter } from "react-router-dom";
 
 class App extends Component {
@@ -59,7 +59,7 @@ class App extends Component {
     );
   };
 
-  addBook = () => {
+  addBook = (routeProps) => {
     if (!this.state.HATEAOS) {
       return;
     }
@@ -71,14 +71,16 @@ class App extends Component {
     );
   };
 
-  updateProfil = () => {
+  updateProfil = (routeProps) => {
     if (!this.state.HATEAOS) {
       return;
     }
+
     return (
       <UpdateProfil
         user={routeProps.match.params.user}
         HATEAOS={this.state.HATEAOS}
+        setupHATEAOS={this.setupHATEAOS}
       />
     );
   };
