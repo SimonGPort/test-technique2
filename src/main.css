@@ -1,23 +1,71 @@
 body {
-    background-color: #bbb;
-    margin: 0;
+  background-color: #bbb;
+  margin: 0;
 }
 
 .overlay {
-    z-index:50;
-    position: fixed;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    background-color:rgba(0,0,0,0.5);
+  z-index: 50;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .popup {
-    z-index:100;
-    position: fixed;
-    top:200px;
-    left:200px;
-    right:200px;
-    background-color:white
+  z-index: 100;
+  position: fixed;
+  top: 200px;
+  left: 200px;
+  right: 200px;
+  background-color: white;
+}
+.FirstPage-form {
+  display: grid;
+}
+.Firstpage-boutton {
+  border: black solid 2px;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.Firstpage-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.register-container {
+  display: grid;
+}
+.register-input-container {
+  margin: 10px;
+  width: 260px;
+  justify-content: space-between;
+  display: flex;
+}
+table.table-main td {
+  padding-left: 100px;
+}
+
+table.table-main th {
+  width: 200px;
+  padding-left: 100px;
+}
+.option-container-main {
+  display: flex;
+}
+.option-main {
+  margin-left: 100px;
+}
+
+.table-main {
+  margin-top: 20px;
+}
+.thead {
+  border-bottom: black solid 1px;
 }
