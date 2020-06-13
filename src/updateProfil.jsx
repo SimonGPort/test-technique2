@@ -71,7 +71,12 @@ class UpdateProfil extends Component {
             <button type="submit" className="event-chat-submit">
               Update Profil
             </button>
-            <Link to={this.props.HATEAOS._link.mainPage.href}>return</Link>
+            <Link
+              to={this.props.HATEAOS._link.mainPage.href}
+              className="return-button"
+            >
+              return
+            </Link>
           </form>
         </div>
       </div>

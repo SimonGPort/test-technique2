@@ -65,11 +65,16 @@ class MainPage extends Component {
   render = () => {
     let options = [
       <div key="option">
-        <div>Books App</div>
+        <h1>Books App</h1>
         <div className="option-container-main">
           {this.props.HATEAOS._link.addBook !== undefined ? (
             <div className="option-main">
-              <Link to={this.props.HATEAOS._link.addBook.href}>add a book</Link>
+              <Link
+                to={this.props.HATEAOS._link.addBook.href}
+                className="button-style"
+              >
+                Add a book
+              </Link>
             </div>
           ) : (
             ""
@@ -77,16 +82,22 @@ class MainPage extends Component {
           <div className="option-main">
             <form onSubmit={this.submitHandler}>
               <input
+                className="input-filter"
                 onChange={(evt) => {
                   this.setState({ filterInput: evt.target.value });
                 }}
               ></input>
-              <button type="submit"></button>
+              <button type="submit" className="button-style">
+                Search
+              </button>
             </form>
           </div>
           {this.props.HATEAOS._link.updateProfil !== undefined ? (
             <div className="option-main">
-              <Link to={this.props.HATEAOS._link.updateProfil.href}>
+              <Link
+                to={this.props.HATEAOS._link.updateProfil.href}
+                className="button-style"
+              >
                 Update Profil
               </Link>
             </div>
@@ -95,7 +106,9 @@ class MainPage extends Component {
           )}
           {this.props.HATEAOS._link.logOut !== undefined ? (
             <div className="option-main">
-              <button onClick={this.logout}>Log out</button>
+              <button onClick={this.logout} className="button-style">
+                Log out
+              </button>
             </div>
           ) : (
             ""
@@ -111,10 +124,15 @@ class MainPage extends Component {
           <td>{book.rating}</td>
           <td>{book.details}</td>
           <td>
-            <Link to={this.props.HATEAOS._link.edit.href + "/" + book.id}>
+            <Link
+              to={this.props.HATEAOS._link.edit.href + "/" + book.id}
+              className="button-style"
+              style={{ marginRight: "10px" }}
+            >
               Edit
             </Link>
             <button
+              className="button-style"
               onClick={() => {
                 this.deleteBookHandle(book.id);
               }}
@@ -132,10 +150,18 @@ class MainPage extends Component {
         <table className="table-main">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Rating</th>
-              <th>Details</th>
-              <th>Actions</th>
+              <td>
+                <h3>Name</h3>
+              </td>
+              <td>
+                <h3>Rating</h3>
+              </td>
+              <td>
+                <h3>Details</h3>
+              </td>
+              <td>
+                <h3>Actions</h3>
+              </td>
             </tr>
           </thead>
           <tbody>{books}</tbody>

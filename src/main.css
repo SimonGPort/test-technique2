@@ -25,6 +25,8 @@ body {
   display: grid;
 }
 .Firstpage-boutton {
+  background: white;
+  color: black;
   border: black solid 2px;
   border-radius: 5px;
   padding: 10px;
@@ -68,4 +70,36 @@ table.table-main th {
 }
 .thead {
   border-bottom: black solid 1px;
+}
+.button-style {
+  padding-left: 5px;
+  padding-right: 5px;
+  text-decoration: none;
+  color: black;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 1px;
+  background-color: rgb(239, 239, 239);
+  font-size: 17px;
+  cursor: pointer;
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+}
+.thead {
+  border-bottom: black 1px solid;
+}
+
+.return-button {
+  text-align: center;
+  margin-top: 5px;
+  text-decoration: none;
+  background-color: #efefef;
+  color: black;
+  border: 1px solid #757575;
+  border-radius: 2px;
+}
+
+.input-filter {
+  height: 18px;
 }
