@@ -7,6 +7,7 @@ import Login from "./Login.jsx";
 import MainPage from "./MainPage.jsx";
 import AddBook from "./addBook.jsx";
 import UpdateProfil from "./UpdateProfil.jsx";
+import ModifyBook from "./ModifyBook.jsx";
 import { withRouter } from "react-router-dom";
 
 class App extends Component {
@@ -71,6 +72,20 @@ class App extends Component {
     );
   };
 
+  ModifyBook = (routeProps) => {
+    if (!this.state.HATEAOS) {
+      return;
+    }
+
+    return (
+      <ModifyBook
+        user={routeProps.match.params.user}
+        HATEAOS={this.state.HATEAOS}
+        id={routeProps.match.params.id}
+      />
+    );
+  };
+
   updateProfil = (routeProps) => {
     if (!this.state.HATEAOS) {
       return;
@@ -107,6 +122,10 @@ class App extends Component {
         <Route
           path="/updateProfil/:user"
           render={(routeProps) => this.updateProfil(routeProps)}
+        />
+        <Route
+          path="/edit/:user/:id"
+          render={(routeProps) => this.ModifyBook(routeProps)}
         />
       </BrowserRouter>
     );

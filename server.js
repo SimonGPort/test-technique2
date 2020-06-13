@@ -44,7 +44,7 @@ app.post("/autoLogin", async (req, res) => {
           _link: {
             fetchBooks: { href: `/fetchBooks/${username}` },
             delete: { href: `/delete/${username}` },
-            modify: { href: `/modify/${username}` },
+            edit: { href: `/edit/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
@@ -100,6 +100,36 @@ app.post("/addBook/:user", uploads.none(), async (req, res) => {
   }
 });
 
+app.post("/edit/:user/:id", uploads.none(), async (req, res) => {
+  let user = req.params.user;
+  let id = req.params.id;
+  let name = req.body.name;
+  let rating = req.body.rating;
+  let details = req.body.details;
+
+  try {
+    await dbo.collection("users").updateOne(
+      { username: user, books: { $elemMatch: { id: id } } },
+      {
+        $set: {
+          "books.$.name": name,
+          "books.$.rating": rating,
+          "books.$.details": details,
+        },
+      }
+    );
+    res.send(
+      JSON.stringify({
+        success: true,
+      })
+    );
+  } catch (err) {
+    console.log("book insertion fail", err);
+    res.send(JSON.stringify({ success: false }));
+    return;
+  }
+});
+
 app.post("/updateProfil/:user", uploads.none(), async (req, res) => {
   console.log("updateProfil backend");
   let user = req.params.user;
@@ -127,7 +157,7 @@ app.post("/updateProfil/:user", uploads.none(), async (req, res) => {
           _link: {
             fetchBooks: { href: `/fetchBooks/${username}` },
             delete: { href: `/delete/${username}` },
-            modify: { href: `/modify/${username}` },
+            edit: { href: `/edit/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
@@ -167,7 +197,7 @@ app.post("/register", uploads.none(), async (req, res) => {
           _link: {
             fetchBooks: { href: `/fetchBooks/${username}` },
             delete: { href: `/delete/${username}` },
-            modify: { href: `/modify/${username}` },
+            edit: { href: `/edit/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
@@ -213,7 +243,7 @@ app.get("/login/:username/:password", async (req, res) => {
             _link: {
               fetchBooks: { href: `/fetchBooks/${username}` },
               delete: { href: `/delete/${username}` },
-              modify: { href: `/modify/${username}` },
+              edit: { href: `/edit/${username}` },
               mainPage: { href: `/mainPage/${username}` },
               updateProfil: { href: `/updateProfil/${username}` },
               addBook: { href: `/addBook/${username}` },

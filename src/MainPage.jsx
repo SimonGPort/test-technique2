@@ -37,7 +37,7 @@ class MainPage extends Component {
   modifyBookHandle = (id) => {
     console.log("hello world", id);
   };
-  //je travail ici
+
   deleteBookHandle = async (id) => {
     console.log("delete:", this.props.HATEAOS._link.delete.href + "/" + id);
     let response = await fetch(
@@ -96,13 +96,9 @@ class MainPage extends Component {
           <td>{book.rating}</td>
           <td>{book.details}</td>
           <td>
-            <button
-              onClick={() => {
-                this.modifyBookHandle(book.id);
-              }}
-            >
-              Modify
-            </button>
+            <Link to={this.props.HATEAOS._link.edit.href + "/" + book.id}>
+              Edit
+            </Link>
             <button
               onClick={() => {
                 this.deleteBookHandle(book.id);
