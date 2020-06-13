@@ -10,7 +10,9 @@ let mongodb = require("mongodb");
 let MongoClient = mongodb.MongoClient;
 let ObjectId = mongodb.ObjectID;
 let dbo = undefined;
-let url = process.env.MONGO_ACCESS;
+// let url = process.env.MONGO_ACCESS;
+let url =
+  "mongodb+srv://bob:bobsue@cluster0-moshr.azure.mongodb.net/Test-books?retryWrites=true&w=majority";
 MongoClient.connect(url, { useUnifiedTopology: true })
   .then((client) => {
     dbo = client.db("Test-books");
