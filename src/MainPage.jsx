@@ -7,6 +7,7 @@ class MainPage extends Component {
     super(props);
     this.state = {
       books: [],
+      filterInput: "",
     };
   }
 
@@ -18,8 +19,10 @@ class MainPage extends Component {
     let body = await response.text();
     body = JSON.parse(body);
     if (body.success) {
-      console.log("books updated");
-      this.setState({ books: body.books });
+      let bookFilted = body.books.filter((book) => {
+        return book.name.includes(this.state.filterInput);
+      });
+      this.setState({ books: bookFilted });
     }
   };
 
@@ -54,6 +57,11 @@ class MainPage extends Component {
     }
   };
 
+  submitHandler = (evt) => {
+    evt.preventDefault();
+    this.fetchBooks();
+  };
+
   render = () => {
     let options = [
       <div key="option">
@@ -67,7 +75,14 @@ class MainPage extends Component {
             ""
           )}
           <div className="option-main">
-            <input></input>
+            <form onSubmit={this.submitHandler}>
+              <input
+                onChange={(evt) => {
+                  this.setState({ filterInput: evt.target.value });
+                }}
+              ></input>
+              <button type="submit"></button>
+            </form>
           </div>
           {this.props.HATEAOS._link.updateProfil !== undefined ? (
             <div className="option-main">
