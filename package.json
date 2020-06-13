@@ -8,7 +8,7 @@
     "build": "webpack --mode production"
   },
   "keywords": [],
-  "author": "Jacques Le Normand",
+  "author": "SGP",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.2.2",
