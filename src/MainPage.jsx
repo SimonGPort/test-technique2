@@ -34,6 +34,25 @@ class MainPage extends Component {
       this.props.setupHATEAOS(undefined);
     }
   };
+  modifyBookHandle = (id) => {
+    console.log("hello world", id);
+  };
+  //je travail ici
+  deleteBookHandle = async (id) => {
+    console.log("delete:", this.props.HATEAOS._link.delete.href + "/" + id);
+    let response = await fetch(
+      this.props.HATEAOS._link.delete.href + "/" + id,
+      {
+        method: "POST",
+      }
+    );
+    let body = await response.text();
+    body = JSON.parse(body);
+    if (body.success) {
+      let newBooks = this.state.books.filter((book) => book.id !== id);
+      this.setState({ books: newBooks });
+    }
+  };
 
   render = () => {
     let options = [
@@ -42,7 +61,7 @@ class MainPage extends Component {
         <div className="option-container-main">
           {this.props.HATEAOS._link.addBook !== undefined ? (
             <div className="option-main">
-              <button />
+              <Link to={this.props.HATEAOS._link.addBook.href}>add a book</Link>
             </div>
           ) : (
             ""
@@ -75,10 +94,22 @@ class MainPage extends Component {
         <tr key={idx}>
           <td>{book.name}</td>
           <td>{book.rating}</td>
-          <td>{book.detail}</td>
+          <td>{book.details}</td>
           <td>
-            <button>Modify</button>
-            <button>Delete</button>
+            <button
+              onClick={() => {
+                this.modifyBookHandle(book.id);
+              }}
+            >
+              Modify
+            </button>
+            <button
+              onClick={() => {
+                this.deleteBookHandle(book.id);
+              }}
+            >
+              Delete
+            </button>
           </td>
         </tr>
       );

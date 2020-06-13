@@ -26,7 +26,8 @@ app.use("/", express.static("build")); // Needed for the HTML and JS files
 app.use("/", express.static("public")); // Needed for local assets
 
 const sessions = {};
-// Your endpoints go after this line
+
+// Endpoints go after this line
 
 app.post("/autoLogin", async (req, res) => {
   let sessionId = req.cookies.sid;
@@ -42,6 +43,8 @@ app.post("/autoLogin", async (req, res) => {
         HATEOAS: {
           _link: {
             fetchBooks: { href: `/fetchBooks/${username}` },
+            delete: { href: `/delete/${username}` },
+            modify: { href: `/modify/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
@@ -58,6 +61,43 @@ app.post("/logOut", uploads.none(), async (req, res) => {
   delete sessions[sessionId];
   console.log("logout sucess");
   res.send(JSON.stringify({ success: true }));
+});
+
+app.post("/delete/:user/:id", uploads.none(), async (req, res) => {
+  let user = req.params.user;
+  let id = req.params.id;
+  try {
+    await dbo
+      .collection("users")
+      .updateOne({ username: user }, { $pull: { books: { id: id } } });
+    res.send(JSON.stringify({ success: true }));
+  } catch (err) {
+    console.log("book supression fail", err);
+    res.send(JSON.stringify({ success: false }));
+    return;
+  }
+});
+
+app.post("/addBook/:user", uploads.none(), async (req, res) => {
+  let user = req.params.user;
+  let name = req.body.name;
+  let rating = req.body.rating;
+  let details = req.body.details;
+  let id = "" + Math.floor(Math.random() * 1000000);
+
+  try {
+    await dbo
+      .collection("users")
+      .updateOne(
+        { username: user },
+        { $push: { books: { name, rating, details, id } } }
+      );
+    res.send(JSON.stringify({ success: true }));
+  } catch (err) {
+    console.log("book insertion fail", err);
+    res.send(JSON.stringify({ success: false }));
+    return;
+  }
 });
 
 app.post("/updateProfil/:user", uploads.none(), async (req, res) => {
@@ -85,10 +125,12 @@ app.post("/updateProfil/:user", uploads.none(), async (req, res) => {
         success: true,
         HATEOAS: {
           _link: {
-            fetchBooks: { href: `/fetchBooks/${newUsername}` },
-            mainPage: { href: `/mainPage/${newUsername}` },
-            updateProfil: { href: `/updateProfil/${newUsername}` },
-            addBook: { href: `/addBook/${newUsername}` },
+            fetchBooks: { href: `/fetchBooks/${username}` },
+            delete: { href: `/delete/${username}` },
+            modify: { href: `/modify/${username}` },
+            mainPage: { href: `/mainPage/${username}` },
+            updateProfil: { href: `/updateProfil/${username}` },
+            addBook: { href: `/addBook/${username}` },
             logOut: { href: `/logOut` },
           },
         },
@@ -124,6 +166,8 @@ app.post("/register", uploads.none(), async (req, res) => {
         HATEOAS: {
           _link: {
             fetchBooks: { href: `/fetchBooks/${username}` },
+            delete: { href: `/delete/${username}` },
+            modify: { href: `/modify/${username}` },
             mainPage: { href: `/mainPage/${username}` },
             updateProfil: { href: `/updateProfil/${username}` },
             addBook: { href: `/addBook/${username}` },
@@ -168,10 +212,12 @@ app.get("/login/:username/:password", async (req, res) => {
           HATEOAS: {
             _link: {
               fetchBooks: { href: `/fetchBooks/${username}` },
+              delete: { href: `/delete/${username}` },
+              modify: { href: `/modify/${username}` },
               mainPage: { href: `/mainPage/${username}` },
               updateProfil: { href: `/updateProfil/${username}` },
               addBook: { href: `/addBook/${username}` },
-              logOut: { href: "/logOut" },
+              logOut: { href: `/logOut` },
             },
           },
         })
@@ -186,7 +232,7 @@ app.get("/login/:username/:password", async (req, res) => {
   }
 });
 
-// Your endpoints go before this line
+// Endpoints go before this line
 
 app.all("/*", (req, res, next) => {
   // needed for react router

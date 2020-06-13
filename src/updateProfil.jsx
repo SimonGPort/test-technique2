@@ -31,7 +31,6 @@ class UpdateProfil extends Component {
     });
     let body = await response.text();
     body = JSON.parse(body);
-    console.log("frontend update profil", body.success);
     if (body.success) {
       this.props.setupHATEAOS(body.HATEOAS);
 
@@ -52,7 +51,6 @@ class UpdateProfil extends Component {
   };
 
   render = () => {
-    console.log("HATEAOS:", this.props.HATEAOS);
     return (
       <div className="Firstpage-container">
         <div className="FirstPage-form">
